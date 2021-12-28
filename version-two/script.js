@@ -8,6 +8,7 @@ window.onload = function() {
 }
 
 let view = {
+   appleIndex: 0,
 
    renderGrid: function() {
       const gridEl = document.querySelector('.gridEl');
@@ -27,11 +28,11 @@ let view = {
 
    renderApple: function() {
       const gridElList = document.getElementsByClassName('square');
-      let appleIndex = 0;
+      gridElList[this.appleIndex].classList.remove('apple');
       do {
-         appleIndex = Math.floor(Math.random() * model.gridSize);
-      } while(gridElList[appleIndex].classList.contains('snake'));
-      gridElList[appleIndex].classList.add('apple');
+         this.appleIndex = Math.floor(Math.random() * model.gridSize);
+      } while(gridElList[this.appleIndex].classList.contains('snake'));
+      gridElList[this.appleIndex].classList.add('apple');
    }
 
 };
@@ -39,19 +40,32 @@ let view = {
 let model = {
    snake: [2, 1, 0],
    gridSize: 100,
+   tail: 0,
 
    moveSnake: function() {
       const gridElList = document.getElementsByClassName('square');
-      const tail = model.snake.pop();
-      gridElList[tail].classList.remove('snake');
+      model.tail = model.snake[model.snake.length - 1];
+      model.snake.pop();
+      gridElList[model.tail].classList.remove('snake');
       model.snake.unshift(model.snake[0] + controller.direction);
+      model.growSnake();
       view.renderSnake();
    },
 
    eatApple: function() {
-      
-   }
+      if (this.snake[0] === view.appleIndex) {
+         view.renderApple();
+         return true;
+      }
+   },
 
+   growSnake: function() {
+      const gridElList = document.getElementsByClassName('square');
+      if (this.eatApple()) {
+         gridElList[this.tail].classList.add('snake');
+         this.snake.push(this.tail);
+      }
+   }
    
 };
 
@@ -59,7 +73,6 @@ let controller = {
    direction: 1,
 
    startGame: function() {
-      model.moveSnake();
       let intervalID = window.setInterval(model.moveSnake, 1000);
       view.renderApple();
    },
