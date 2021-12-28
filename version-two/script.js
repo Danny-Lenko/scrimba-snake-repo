@@ -45,6 +45,7 @@ let view = {
 let model = {
    snake: [2, 1, 0],
    gridSize: 100,
+   gridLength: 0,
    tail: 0,
    score: 0,
    speed: 1000,
@@ -52,11 +53,31 @@ let model = {
 
    moveSnake: function() {
       const gridElList = document.getElementsByClassName('square');
+      model.gridLength = Math.sqrt(model.gridSize);
+
+      if (
+         model.snake[0] % model.gridLength === model.gridLength - 1 
+         && controller.direction === 1
+
+         || model.snake[0] % model.gridLength === 0 
+         && controller.direction === -1
+
+         || model.snake[0] - model.gridLength < 0
+         && controller.direction === -10
+
+         || model.snake[0] + model.gridLength >= model.gridSize
+         && controller.direction === 10
+
+         || gridElList[model.snake[0] + controller.direction].classList.contains('snake')
+         ) {
+         return clearInterval(controller.intervalID);
+      }
+
       model.tail = model.snake[model.snake.length - 1];
       model.snake.pop();
       gridElList[model.tail].classList.remove('snake');
       model.snake.unshift(model.snake[0] + controller.direction);
-      model.growSnake();
+      model.growSnake(gridElList);
       view.renderSnake();
    },
 
@@ -72,13 +93,12 @@ let model = {
       }
    },
 
-   growSnake: function() {
-      const gridElList = document.getElementsByClassName('square');
+   growSnake: function(grid) {
       if (this.eatApple()) {
-         gridElList[this.tail].classList.add('snake');
+         grid[this.tail].classList.add('snake');
          this.snake.push(this.tail);
       }
-   }
+   },
    
 };
 
@@ -101,7 +121,7 @@ let controller = {
       } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
          controller.direction = -1;
       }
-   }
+   },
 
 };
 
