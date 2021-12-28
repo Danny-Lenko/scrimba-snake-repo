@@ -11,7 +11,7 @@ let view = {
 
    renderGrid: function() {
       const gridEl = document.querySelector('.gridEl');
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < model.gridSize; i++) {
          const square = document.createElement('div');
          gridEl.appendChild(square);
          square.setAttribute('class', 'square');
@@ -23,12 +23,22 @@ let view = {
       for (let i = 0; i < model.snake.length; i++) {
          gridElList[model.snake[i]].classList.add('snake');
       }
+   },
+
+   renderApple: function() {
+      const gridElList = document.getElementsByClassName('square');
+      let appleIndex = 0;
+      do {
+         appleIndex = Math.floor(Math.random() * model.gridSize);
+      } while(gridElList[appleIndex].classList.contains('snake'));
+      gridElList[appleIndex].classList.add('apple');
    }
 
 };
 
 let model = {
    snake: [2, 1, 0],
+   gridSize: 100,
 
    moveSnake: function() {
       const gridElList = document.getElementsByClassName('square');
@@ -37,6 +47,10 @@ let model = {
       model.snake.unshift(model.snake[0] + controller.direction);
       view.renderSnake();
    },
+
+   eatApple: function() {
+      
+   }
 
    
 };
@@ -47,6 +61,7 @@ let controller = {
    startGame: function() {
       model.moveSnake();
       let intervalID = window.setInterval(model.moveSnake, 1000);
+      view.renderApple();
    },
 
    controlSnake: function(e) {
