@@ -33,6 +33,11 @@ let view = {
          this.appleIndex = Math.floor(Math.random() * model.gridSize);
       } while(gridElList[this.appleIndex].classList.contains('snake'));
       gridElList[this.appleIndex].classList.add('apple');
+   },
+
+   renderScore: function() {
+      const scoreEl = document.querySelector('#scoreEl');
+      scoreEl.innerHTML = model.score;
    }
 
 };
@@ -41,6 +46,9 @@ let model = {
    snake: [2, 1, 0],
    gridSize: 100,
    tail: 0,
+   score: 0,
+   speed: 1000,
+   levelUp: .9,
 
    moveSnake: function() {
       const gridElList = document.getElementsByClassName('square');
@@ -54,7 +62,12 @@ let model = {
 
    eatApple: function() {
       if (this.snake[0] === view.appleIndex) {
+         clearInterval(controller.intervalID);
+         this.speed *= this.levelUp;
+         controller.intervalID = window.setInterval(this.moveSnake, this.speed);
          view.renderApple();
+         this.score++;
+         view.renderScore();
          return true;
       }
    },
@@ -71,9 +84,10 @@ let model = {
 
 let controller = {
    direction: 1,
+   intervalID: 0,
 
    startGame: function() {
-      let intervalID = window.setInterval(model.moveSnake, 1000);
+      controller.intervalID = window.setInterval(model.moveSnake, model.speed);
       view.renderApple();
    },
 
