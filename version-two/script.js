@@ -4,6 +4,7 @@ window.onload = function() {
    view.renderGrid();
    view.renderSnake();
    document.querySelector('#startBtn').addEventListener('click', controller.startGame);
+   document.onkeyup = controller.controlSnake;
 }
 
 let view = {
@@ -46,7 +47,20 @@ let controller = {
    startGame: function() {
       model.moveSnake();
       let intervalID = window.setInterval(model.moveSnake, 1000);
+   },
+
+   controlSnake: function(e) {
+      if (e.key === 'ArrowDown' || e.key === 'Down') {
+         controller.direction = 10;
+      } else if (e.key === 'ArrowUp' || e.key === 'Up') {
+         controller.direction = -10;
+      } else if (e.key === 'ArrowRight' || e.key === 'Right') {
+         controller.direction = 1;
+      } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
+         controller.direction = -1;
+      }
    }
+
 };
 
 
