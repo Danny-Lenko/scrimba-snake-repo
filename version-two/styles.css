@@ -1,0 +1,29 @@
+body {
+   margin: 0 auto;
+   width: 400px;
+   text-align: center;
+}
+
+.gridEl {
+   border: 2px solid black;
+   width: 200px;
+   height: 200px;
+   margin: 0 auto;
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.square {
+   width: 20px;
+   height: 20px;
+   background: lightgrey;
+}
+
+.snake {
+   background: brown;
+}
+
+.apple {
+   background: green;
+}
+
