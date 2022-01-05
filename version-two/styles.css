@@ -48,3 +48,7 @@ body {
    padding: .5em 1.5em;
 }
 
+#smallerGrid {
+   display: none;
+}
+
