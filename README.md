@@ -2,4 +2,11 @@
 
 ## used to practice js
 
-sandbox branches are added and finally PRed to practice used js features
+### What I learned
+
+
+
+
+### Useful resources
+
+- [Node.removeChild](https://developer.mozilla.org/ru/docs/Web/API/Node/removeChild) - This article helped me find a better way to remove all the children.
