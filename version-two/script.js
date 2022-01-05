@@ -70,7 +70,8 @@ let model = {
 
          || gridElList[model.snake[0] + controller.direction].classList.contains('snake')
          ) {
-         return clearInterval(controller.intervalID);
+            controller.btnClickable = true;
+            return clearInterval(controller.intervalID);
       }
 
       model.tail = model.snake[model.snake.length - 1];
@@ -105,10 +106,15 @@ let model = {
 let controller = {
    direction: 1,
    intervalID: 0,
+   btnClickable: true,
 
    startGame: function() {
-      controller.intervalID = window.setInterval(model.moveSnake, model.speed);
-      view.renderApple();
+      if (controller.btnClickable) {
+         controller.resetGame();
+         controller.intervalID = window.setInterval(model.moveSnake, model.speed);
+         view.renderApple();
+         controller.btnClickable = false;   
+      }
    },
 
    controlSnake: function(e) {
@@ -122,6 +128,22 @@ let controller = {
          controller.direction = -1;
       }
    },
+
+   resetGame: function() {
+      const gridElList = document.getElementsByClassName('square');
+      for (let i = 0; i < model.gridSize; i++) {
+         gridElList[i].classList.remove('snake');
+      }
+      model.snake = [2, 1, 0];
+      model.tail = 0;
+      model.score = 0;
+      model.speed = 1000;
+      view.renderSnake();
+      this.direction = 1;
+      this.intervalID = 0;
+      view.renderScore();
+
+   }
 
 };
 
