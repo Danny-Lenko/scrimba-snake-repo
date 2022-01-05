@@ -5,6 +5,9 @@ window.onload = function() {
    view.renderSnake();
    document.querySelector('#startBtn').addEventListener('click', controller.startGame);
    document.onkeyup = controller.controlSnake;
+
+   document.querySelector('#modeBtn').addEventListener('click', controller.chooseMode);
+   document.querySelector('#biggerGrid').addEventListener('click', model.biggerGrid);
 }
 
 let view = {
@@ -100,6 +103,10 @@ let model = {
          this.snake.push(this.tail);
       }
    },
+
+   biggerGrid: function() {
+      document.querySelector('.mode').style.display = 'none';
+   }
    
 };
 
@@ -142,7 +149,10 @@ let controller = {
       this.direction = 1;
       this.intervalID = 0;
       view.renderScore();
+   },
 
+   chooseMode: function() {
+      document.querySelector('.mode').style.display = 'block';
    }
 
 };
