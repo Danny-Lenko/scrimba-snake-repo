@@ -5,6 +5,12 @@ window.onload = function() {
    view.renderSnake();
    document.querySelector('#startBtn').addEventListener('click', controller.startGame);
    document.onkeyup = controller.controlSnake;
+   document.querySelector('#modeBtn').addEventListener('click', controller.chooseMode);
+   
+   document.querySelector('#biggerGrid').addEventListener('click', model.biggerGrid);
+   document.querySelector('#smallerGrid').addEventListener('click', model.smallerGrid);
+
+   document.querySelector('#exitModal').addEventListener('click', model.exitModal);
 }
 
 let view = {
@@ -38,6 +44,13 @@ let view = {
    renderScore: function() {
       const scoreEl = document.querySelector('#scoreEl');
       scoreEl.innerHTML = model.score;
+   },
+
+   clearGrid: function() {
+      const gridEl = document.querySelector('.gridEl');
+      while(gridEl.firstChild) {
+         gridEl.removeChild(gridEl.firstChild);
+      }
    }
 
 };
@@ -50,6 +63,7 @@ let model = {
    score: 0,
    speed: 1000,
    levelUp: .9,
+   squareSize: 20,
 
    moveSnake: function() {
       const gridElList = document.getElementsByClassName('square');
@@ -63,10 +77,10 @@ let model = {
          && controller.direction === -1
 
          || model.snake[0] - model.gridLength < 0
-         && controller.direction === -10
+         && controller.direction === -model.gridLength
 
          || model.snake[0] + model.gridLength >= model.gridSize
-         && controller.direction === 10
+         && controller.direction === model.gridLength
 
          || gridElList[model.snake[0] + controller.direction].classList.contains('snake')
          ) {
@@ -100,6 +114,19 @@ let model = {
          this.snake.push(this.tail);
       }
    },
+
+   biggerGrid: function() {
+      changeGridSize('300px', '300px', 225);
+      changeButton(document.querySelector('#biggerGrid'), document.querySelector('#smallerGrid'));
+   },
+   smallerGrid: function() {
+      changeGridSize('200px', '200px', 100);
+      changeButton(document.querySelector('#smallerGrid'), document.querySelector('#biggerGrid'));
+   },
+
+   exitModal: function() {
+      document.querySelector('.mode').style.display = 'none';
+   }
    
 };
 
@@ -119,9 +146,9 @@ let controller = {
 
    controlSnake: function(e) {
       if (e.key === 'ArrowDown' || e.key === 'Down') {
-         controller.direction = 10;
+         controller.direction = model.gridLength;
       } else if (e.key === 'ArrowUp' || e.key === 'Up') {
-         controller.direction = -10;
+         controller.direction = -model.gridLength;
       } else if (e.key === 'ArrowRight' || e.key === 'Right') {
          controller.direction = 1;
       } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
@@ -142,10 +169,29 @@ let controller = {
       this.direction = 1;
       this.intervalID = 0;
       view.renderScore();
+   },
 
+   chooseMode: function() {
+      document.querySelector('.mode').style.display = 'block';
    }
 
 };
+
+function changeGridSize(width, height, gridSize) {
+   const gridEl = document.querySelector('.gridEl');
+   view.clearGrid();
+   gridEl.style.width = width;
+   gridEl.style.height = height;
+   model.gridSize = gridSize;
+   view.renderGrid();
+   view.renderSnake();
+   document.querySelector('.mode').style.display = 'none';
+}
+
+function changeButton(hide, show) {
+   hide.style.display = 'none';
+   show.style.display = 'inline-block';
+}
 
 
 

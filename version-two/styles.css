@@ -8,7 +8,7 @@ body {
    border: 2px solid black;
    width: 200px;
    height: 200px;
-   margin: 0 auto;
+   margin: 0 auto 1em;
    display: flex;
    flex-wrap: wrap;
 }
@@ -25,5 +25,30 @@ body {
 
 .apple {
    background: green;
+}
+
+.mode {
+   display: none;
+   height: 100vh;
+   width: 100vw;
+   position: absolute;
+   top: 0;
+   left: 0;
+   background: rgba(23, 32, 42, .95);
+}
+.mode__h2 {
+   font-size: 4rem;
+   letter-spacing: 5px;
+   text-transform: uppercase;
+   margin-top: 30vh;
+   color: white;
+}
+.mode button {
+   font-size: 1.2rem;
+   padding: .5em 1.5em;
+}
+
+#smallerGrid {
+   display: none;
 }
 
