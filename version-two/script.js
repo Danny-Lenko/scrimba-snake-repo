@@ -135,13 +135,17 @@ let model = {
    },
 
    thinerSnake: function() {
+      clearInterval(controller.intervalID);
       model.gridSize *= 4;
       changeSnakeWidth('10px', '10px');
+      restartModeChanges();
       changeButton(document.querySelector('#thinerSnake'), document.querySelector('#thickerSnake'));
    },
    thickerSnake: function() {
+      clearInterval(controller.intervalID);
       model.gridSize = 100;
       changeSnakeWidth('20px', '20px');
+      restartModeChanges()
       changeButton(document.querySelector('#thickerSnake'), document.querySelector('#thinerSnake'));
    },
 
