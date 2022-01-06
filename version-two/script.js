@@ -36,6 +36,9 @@ let view = {
 
    renderApple: function() {
       const gridElList = document.getElementsByClassName('square');
+      if (gridElList[this.appleIndex]) {
+         gridElList[this.appleIndex].classList.remove('apple');
+      }
       do {
          this.appleIndex = Math.floor(Math.random() * model.gridSize);
       } while(gridElList[this.appleIndex].classList.contains('snake'));
@@ -53,10 +56,6 @@ let view = {
          gridEl.removeChild(gridEl.firstChild);
       }
    },
-
-   removeApple: function(gridList) {
-      gridList[this.appleIndex].classList.remove('apple');
-   }
 
 };
 
@@ -106,7 +105,6 @@ let model = {
          clearInterval(controller.intervalID);
          this.speed *= this.levelUp;
          controller.intervalID = window.setInterval(this.moveSnake, this.speed);
-         view.removeApple(document.getElementsByClassName('square'));
          view.renderApple();
          this.score++;
          view.renderScore();
@@ -125,14 +123,12 @@ let model = {
       changeGridSize('300px', '300px', 225);
       clearInterval(controller.intervalID);
       restartModeChanges();
-      view.renderApple();
       changeButton(document.querySelector('#biggerGrid'), document.querySelector('#smallerGrid'));
    },
    smallerGrid: function() {
       changeGridSize('200px', '200px', 100);
       clearInterval(controller.intervalID);
       restartModeChanges();
-      view.renderApple();
       changeButton(document.querySelector('#smallerGrid'), document.querySelector('#biggerGrid'));
    },
 
@@ -181,6 +177,7 @@ let controller = {
 
    resetGame: function() {
       const gridElList = document.getElementsByClassName('square');
+      clearInterval(controller.intervalID);
       for (let i = 0; i < model.gridSize; i++) {
          gridElList[i].classList.remove('snake');
       }
@@ -212,7 +209,6 @@ function changeGridSize(width, height, gridSize) {
 
 function changeSnakeWidth(width, height) {
    view.clearGrid();
-   // model.gridSize *= 4;
    view.renderGrid();
    const gridElList = document.getElementsByClassName('square');
    for (let i = 0; i < gridElList.length; i++) {
@@ -223,13 +219,11 @@ function changeSnakeWidth(width, height) {
 }
 
 function restartModeChanges() {
-   
    clearInterval(controller.intervalID);
    controller.resetGame();
-   controller.intervalID = window.setInterval(model.moveSnake, model.speed);
-
-   // view.renderApple();
-   controller.btnClickable = false;
+   if (!controller.btnClickable) {
+      controller.btnClickable = true;
+   }
 }
 
 function changeButton(hide, show) {
