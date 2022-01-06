@@ -9,6 +9,8 @@ window.onload = function() {
    
    document.querySelector('#biggerGrid').addEventListener('click', model.biggerGrid);
    document.querySelector('#smallerGrid').addEventListener('click', model.smallerGrid);
+   document.querySelector('#thinerSnake').addEventListener('click', model.thinerSnake);
+   document.querySelector('#thickerSnake').addEventListener('click', model.thickerSnake);
 
    document.querySelector('#exitModal').addEventListener('click', model.exitModal);
 }
@@ -124,6 +126,15 @@ let model = {
       changeButton(document.querySelector('#smallerGrid'), document.querySelector('#biggerGrid'));
    },
 
+   thinerSnake: function() {
+
+      changeButton(document.querySelector('#thinerSnake'), document.querySelector('#thickerSnake'));
+   },
+   thickerSnake: function() {
+
+      changeButton(document.querySelector('#thickerSnake'), document.querySelector('#thinerSnake'));
+   },
+
    exitModal: function() {
       document.querySelector('.mode').style.display = 'none';
    }
@@ -185,7 +196,6 @@ function changeGridSize(width, height, gridSize) {
    model.gridSize = gridSize;
    view.renderGrid();
    view.renderSnake();
-   document.querySelector('.mode').style.display = 'none';
 }
 
 function changeButton(hide, show) {
