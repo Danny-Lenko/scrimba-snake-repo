@@ -30,7 +30,9 @@ let view = {
    renderSnake: function() {
       const gridElList = document.getElementsByClassName('square');
       for (let i = 0; i < model.snake.length; i++) {
-         gridElList[model.snake[i]].classList.add('snake');
+         if (gridElList[model.snake[0]]) {
+            gridElList[model.snake[i]].classList.add('snake');
+         }
       }
    },
 
@@ -120,14 +122,14 @@ let model = {
    },
 
    biggerGrid: function() {
-      changeGridSize('300px', '300px', 225);
       clearInterval(controller.intervalID);
+      changeGridSize('300px', '300px', 225);
       restartModeChanges();
       changeButton(document.querySelector('#biggerGrid'), document.querySelector('#smallerGrid'));
    },
    smallerGrid: function() {
-      changeGridSize('200px', '200px', 100);
       clearInterval(controller.intervalID);
+      changeGridSize('200px', '200px', 100);
       restartModeChanges();
       changeButton(document.querySelector('#smallerGrid'), document.querySelector('#biggerGrid'));
    },
