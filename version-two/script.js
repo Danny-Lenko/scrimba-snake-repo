@@ -127,6 +127,20 @@ let model = {
    },
 
    thinerSnake: function() {
+      const gridEl = document.querySelector('.gridEl');
+      const gridElList = document.getElementsByClassName('small-square');
+
+      view.clearGrid();
+      model.gridSize *= 4;
+      for (let i = 0; i < model.gridSize; i++) {
+         const square = document.createElement('div');
+         gridEl.appendChild(square);
+         square.setAttribute('class', 'small-square');
+      }
+
+      for (let i = 0; i < model.snake.length; i++) {
+         gridElList[model.snake[i]].classList.add('snake');
+      }
 
       changeButton(document.querySelector('#thinerSnake'), document.querySelector('#thickerSnake'));
    },
