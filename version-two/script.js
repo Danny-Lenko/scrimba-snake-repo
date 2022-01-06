@@ -30,13 +30,17 @@ let view = {
    renderSnake: function() {
       const gridElList = document.getElementsByClassName('square');
       for (let i = 0; i < model.snake.length; i++) {
-         gridElList[model.snake[i]].classList.add('snake');
+         if (gridElList[model.snake[0]]) {
+            gridElList[model.snake[i]].classList.add('snake');
+         }
       }
    },
 
    renderApple: function() {
       const gridElList = document.getElementsByClassName('square');
-      gridElList[this.appleIndex].classList.remove('apple');
+      if (gridElList[this.appleIndex]) {
+         gridElList[this.appleIndex].classList.remove('apple');
+      }
       do {
          this.appleIndex = Math.floor(Math.random() * model.gridSize);
       } while(gridElList[this.appleIndex].classList.contains('snake'));
@@ -53,7 +57,7 @@ let view = {
       while(gridEl.firstChild) {
          gridEl.removeChild(gridEl.firstChild);
       }
-   }
+   },
 
 };
 
@@ -118,20 +122,30 @@ let model = {
    },
 
    biggerGrid: function() {
+      clearInterval(controller.intervalID);
       changeGridSize('300px', '300px', 225);
+      restartModeChanges();
       changeButton(document.querySelector('#biggerGrid'), document.querySelector('#smallerGrid'));
    },
    smallerGrid: function() {
+      clearInterval(controller.intervalID);
       changeGridSize('200px', '200px', 100);
+      restartModeChanges();
       changeButton(document.querySelector('#smallerGrid'), document.querySelector('#biggerGrid'));
    },
 
    thinerSnake: function() {
-
+      clearInterval(controller.intervalID);
+      model.gridSize *= 4;
+      changeSnakeWidth('10px', '10px');
+      restartModeChanges();
       changeButton(document.querySelector('#thinerSnake'), document.querySelector('#thickerSnake'));
    },
    thickerSnake: function() {
-
+      clearInterval(controller.intervalID);
+      model.gridSize = 100;
+      changeSnakeWidth('20px', '20px');
+      restartModeChanges()
       changeButton(document.querySelector('#thickerSnake'), document.querySelector('#thinerSnake'));
    },
 
@@ -169,6 +183,7 @@ let controller = {
 
    resetGame: function() {
       const gridElList = document.getElementsByClassName('square');
+      clearInterval(controller.intervalID);
       for (let i = 0; i < model.gridSize; i++) {
          gridElList[i].classList.remove('snake');
       }
@@ -196,6 +211,25 @@ function changeGridSize(width, height, gridSize) {
    model.gridSize = gridSize;
    view.renderGrid();
    view.renderSnake();
+}
+
+function changeSnakeWidth(width, height) {
+   view.clearGrid();
+   view.renderGrid();
+   const gridElList = document.getElementsByClassName('square');
+   for (let i = 0; i < gridElList.length; i++) {
+      gridElList[i].style.width = width;
+      gridElList[i].style.height = height;
+   }
+   view.renderSnake();
+}
+
+function restartModeChanges() {
+   clearInterval(controller.intervalID);
+   controller.resetGame();
+   if (!controller.btnClickable) {
+      controller.btnClickable = true;
+   }
 }
 
 function changeButton(hide, show) {

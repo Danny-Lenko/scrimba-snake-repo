@@ -18,6 +18,11 @@ body {
    height: 20px;
    background: lightgrey;
 }
+.small-square {
+   width: 10px;
+   height: 10px;
+   background: lightgrey;
+}
 
 .snake {
    background: brown;
