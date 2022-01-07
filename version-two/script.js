@@ -143,7 +143,7 @@ let model = {
    },
    thickerSnake: function() {
       clearInterval(controller.intervalID);
-      model.gridSize = 100;
+      model.gridSize /= 4;
       changeSnakeWidth('20px', '20px');
       restartModeChanges()
       changeButton(document.querySelector('#thickerSnake'), document.querySelector('#thinerSnake'));
@@ -221,6 +221,7 @@ function changeSnakeWidth(width, height) {
       gridElList[i].style.width = width;
       gridElList[i].style.height = height;
    }
+   model.squareSize = width;
    view.renderSnake();
 }
 
