@@ -123,13 +123,13 @@ let model = {
 
    biggerGrid: function() {
       clearInterval(controller.intervalID);
-      changeGridSize('300px', '300px', 225);
+      changeGridSize('300px', '300px');
       restartModeChanges();
       changeButton(document.querySelector('#biggerGrid'), document.querySelector('#smallerGrid'));
    },
    smallerGrid: function() {
       clearInterval(controller.intervalID);
-      changeGridSize('200px', '200px', 100);
+      changeGridSize('200px', '200px');
       restartModeChanges();
       changeButton(document.querySelector('#smallerGrid'), document.querySelector('#biggerGrid'));
    },
@@ -203,13 +203,20 @@ let controller = {
 
 };
 
-function changeGridSize(width, height, gridSize) {
+function changeGridSize(width, height) {
    const gridEl = document.querySelector('.gridEl');
    view.clearGrid();
    gridEl.style.width = width;
    gridEl.style.height = height;
-   model.gridSize = gridSize;
+   let oneSideSquares = parseInt(width) / model.squareSize;
+   model.gridSize = oneSideSquares * oneSideSquares;
    view.renderGrid();
+
+   const gridElList = document.getElementsByClassName('square');
+   for (let i = 0; i < gridElList.length; i++) {
+      gridElList[i].style.width = model.squareSize + 'px';
+      gridElList[i].style.height = model.squareSize + 'px';
+   }
    view.renderSnake();
 }
 
@@ -221,7 +228,8 @@ function changeSnakeWidth(width, height) {
       gridElList[i].style.width = width;
       gridElList[i].style.height = height;
    }
-   model.squareSize = width;
+   model.squareSize = parseInt(width);
+   console.log(model.squareSize);
    view.renderSnake();
 }
 
