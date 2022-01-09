@@ -11,6 +11,9 @@ window.onload = function() {
    document.querySelector('#smallerGrid').addEventListener('click', model.smallerGrid);
    document.querySelector('#thinerSnake').addEventListener('click', model.thinerSnake);
    document.querySelector('#thickerSnake').addEventListener('click', model.thickerSnake);
+   document.querySelector('#wallsOff').addEventListener('click', model.wallsOff);
+   document.querySelector('#wallsOn').addEventListener('click', model.wallsOn);
+
 
    document.querySelector('#exitModal').addEventListener('click', model.exitModal);
 }
@@ -70,28 +73,43 @@ let model = {
    speed: 1000,
    levelUp: .9,
    squareSize: 20,
+   wallsEnabled: true,
 
    moveSnake: function() {
       const gridElList = document.getElementsByClassName('square');
       model.gridLength = Math.sqrt(model.gridSize);
 
-      if (
-         model.snake[0] % model.gridLength === model.gridLength - 1 
-         && controller.direction === 1
+      if (model.wallsEnabled) {
+         if (
+            model.snake[0] % model.gridLength === model.gridLength - 1 
+            && controller.direction === 1
+   
+            || model.snake[0] % model.gridLength === 0 
+            && controller.direction === -1
+   
+            || model.snake[0] - model.gridLength < 0
+            && controller.direction === -model.gridLength
+   
+            || model.snake[0] + model.gridLength >= model.gridSize
+            && controller.direction === model.gridLength
+   
+            || gridElList[model.snake[0] + controller.direction].classList.contains('snake')
+            ) {
+               controller.btnClickable = true;
+               return clearInterval(controller.intervalID);
+         }   
+      } else {
+         if (model.snake[0] % model.gridLength === model.gridLength - 1 
+            && controller.direction === 1) {
+               // for (let i = 0; i < gridElList.length; i++) {
+               //    if (gridElList[i] != model.snake[i]) {
+               //       gridElList[i].classList.remove('snake');
+               //    }
+               // }
+               model.snake[0] -= (model.gridLength - 1);
 
-         || model.snake[0] % model.gridLength === 0 
-         && controller.direction === -1
 
-         || model.snake[0] - model.gridLength < 0
-         && controller.direction === -model.gridLength
-
-         || model.snake[0] + model.gridLength >= model.gridSize
-         && controller.direction === model.gridLength
-
-         || gridElList[model.snake[0] + controller.direction].classList.contains('snake')
-         ) {
-            controller.btnClickable = true;
-            return clearInterval(controller.intervalID);
+            }
       }
 
       model.tail = model.snake[model.snake.length - 1];
@@ -147,6 +165,17 @@ let model = {
       changeSnakeWidth('20px', '20px');
       restartModeChanges()
       changeButton(document.querySelector('#thickerSnake'), document.querySelector('#thinerSnake'));
+   },
+
+   wallsOff: function() {
+      model.wallsEnabled = false;
+      console.log('walls off');
+      changeButton(document.querySelector('#wallsOff'), document.querySelector('#wallsOn'));
+   },
+   wallsOn: function() {
+      model.wallsEnabled = true;
+      console.log('walls on');
+      changeButton(document.querySelector('#wallsOn'), document.querySelector('#wallsOff'));
    },
 
    exitModal: function() {
@@ -245,6 +274,7 @@ function changeButton(hide, show) {
    hide.style.display = 'none';
    show.style.display = 'inline-block';
 }
+
 
 
 
