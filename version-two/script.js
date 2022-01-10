@@ -260,6 +260,7 @@ let controller = {
       this.direction = 1;
       this.intervalID = 0;
       view.renderScore();
+      model.levelUp = .9;
    },
 
    chooseMode: function() {
