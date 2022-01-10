@@ -214,14 +214,18 @@ let controller = {
    },
 
    controlSnake: function(e) {
-      if (e.key === 'ArrowDown' || e.key === 'Down') {
-         controller.direction = model.gridLength;
-      } else if (e.key === 'ArrowUp' || e.key === 'Up') {
-         controller.direction = -model.gridLength;
-      } else if (e.key === 'ArrowRight' || e.key === 'Right') {
-         controller.direction = 1;
-      } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
-         controller.direction = -1;
+      if ( (e.key === 'ArrowDown' || e.key === 'Down') 
+         && controller.direction !== -model.gridLength ) {
+            controller.direction = model.gridLength;
+      } else if ( (e.key === 'ArrowUp' || e.key === 'Up')
+         && controller.direction !== model.gridLength ) {
+            controller.direction = -model.gridLength;
+      } else if ( (e.key === 'ArrowRight' || e.key === 'Right') 
+         && controller.direction !== -1 ) {
+            controller.direction = 1;
+      } else if ( (e.key === 'ArrowLeft' || e.key === 'Left') 
+         && controller.direction !== 1) {
+            controller.direction = -1;
       }
    },
 
