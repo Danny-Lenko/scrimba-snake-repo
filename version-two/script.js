@@ -105,7 +105,7 @@ let model = {
       gridElList[model.tail].classList.remove('snake');
       model.snake.unshift(model.snake[0] + controller.direction);
       if (!model.wallsEnabled) {
-         renderSnakeNoWalls();
+         travelSnakeThroughWalls(gridElList);
          // view.renderSnake();
       }
       model.growSnake(gridElList);
@@ -160,11 +160,13 @@ let model = {
    },
 
    wallsOff: function() {
+      document.querySelector('.gridEl').style.border = '2px solid darkgray';
       model.wallsEnabled = false;
       console.log('walls off');
       changeButton(document.querySelector('#wallsOff'), document.querySelector('#wallsOn'));
    },
    wallsOn: function() {
+      document.querySelector('.gridEl').style.border = '2px solid black';
       model.wallsEnabled = true;
       console.log('walls on');
       changeButton(document.querySelector('#wallsOn'), document.querySelector('#wallsOff'));
@@ -267,11 +269,22 @@ function changeButton(hide, show) {
    show.style.display = 'inline-block';
 }
 
-function renderSnakeNoWalls() {
-
+function travelSnakeThroughWalls(grid) {
    if (model.snake[1] % model.gridLength === model.gridLength - 1 
       && controller.direction === 1) {
          model.snake[0] -= model.gridLength;
+   } else if (model.snake[1] % model.gridLength === 0 
+      && controller.direction === -1) {
+         model.snake[0] += model.gridLength;
+   } else if (model.snake[1] - model.gridLength < 0
+      && controller.direction === -model.gridLength) {
+         model.snake[0] = model.snake[0] + model.gridSize; 
+   } else if (model.snake[1] + model.gridLength >= model.gridSize
+      && controller.direction === model.gridLength) {
+         model.snake[0] -= model.gridSize;
+   } else if (grid[model.snake[1] + controller.direction].classList.contains('snake')) {
+      controller.btnClickable = true;
+      return clearInterval(controller.intervalID);
    }
 }
 
