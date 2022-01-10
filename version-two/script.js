@@ -101,7 +101,7 @@ let model = {
             || gridElList[model.snake[0] + controller.direction].classList.contains('snake')
             ) {
                changeButton(document.querySelector('#pauseBtn'), document.querySelector('#startBtn'));
-               document.querySelector('#startBtn').innerHTML = 'Restart';
+               document.querySelector('#startBtn').innerHTML = 'Restart 🔃';
                return clearInterval(controller.intervalID);
          }   
       }
@@ -144,12 +144,14 @@ let model = {
       clearInterval(controller.intervalID);
       changeGridSize('300px', '300px');
       restartModeChanges();
+      changeButton(document.querySelector('#pauseBtn'), document.querySelector('#startBtn'));
       changeButton(document.querySelector('#biggerGrid'), document.querySelector('#smallerGrid'));
    },
    smallerGrid: function() {
       clearInterval(controller.intervalID);
       changeGridSize('200px', '200px');
       restartModeChanges();
+      changeButton(document.querySelector('#pauseBtn'), document.querySelector('#startBtn'));
       changeButton(document.querySelector('#smallerGrid'), document.querySelector('#biggerGrid'));
    },
 
@@ -158,13 +160,15 @@ let model = {
       model.gridSize *= 4;
       changeSnakeWidth('10px', '10px');
       restartModeChanges();
+      changeButton(document.querySelector('#pauseBtn'), document.querySelector('#startBtn'));
       changeButton(document.querySelector('#thinerSnake'), document.querySelector('#thickerSnake'));
    },
    thickerSnake: function() {
       clearInterval(controller.intervalID);
       model.gridSize /= 4;
       changeSnakeWidth('20px', '20px');
-      restartModeChanges()
+      restartModeChanges();
+      changeButton(document.querySelector('#pauseBtn'), document.querySelector('#startBtn'));
       changeButton(document.querySelector('#thickerSnake'), document.querySelector('#thinerSnake'));
    },
 
@@ -217,11 +221,11 @@ let controller = {
    pauseUnpause: function() {
       if (!controller.gamePaused) {
          clearInterval(controller.intervalID);
-         document.querySelector('#pauseBtn').innerHTML = 'Start';
+         document.querySelector('#pauseBtn').innerHTML = 'Unpause ▶️';
          controller.gamePaused = true;  
       } else {
          controller.intervalID = window.setInterval(model.moveSnake, model.speed);
-         document.querySelector('#pauseBtn').innerHTML = 'Pause';
+         document.querySelector('#pauseBtn').innerHTML = 'Pause ⏸️';
          controller.gamePaused = false;
       }
    },
@@ -302,6 +306,7 @@ function restartModeChanges() {
    if (!controller.btnClickable) {
       controller.btnClickable = true;
    }
+   document.querySelector('#startBtn').innerHTML = "Start Game ▶️";
 }
 
 function changeButton(hide, show) {
@@ -324,7 +329,7 @@ function travelSnakeThroughWalls(grid) {
          model.snake[0] -= model.gridSize;
    } else if (grid[model.snake[1] + controller.direction].classList.contains('snake')) {
       changeButton(document.querySelector('#pauseBtn'), document.querySelector('#startBtn'));
-      document.querySelector('#startBtn').innerHTML = 'Restart';
+      document.querySelector('#startBtn').innerHTML = 'Restart 🔃';
       return clearInterval(controller.intervalID);
    }
 }

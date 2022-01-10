@@ -48,7 +48,8 @@ button {
 #modeBtn,
 #startBtn,
 #pauseBtn {
-   width: 110px;
+   width: 120px;
+   padding: 6px 0;
 }
 .mode__h2 {
    font-size: 4rem;
