@@ -77,6 +77,7 @@ let model = {
    levelUp: .9,
    squareSize: 20,
    wallsEnabled: true,
+   speedLimit: 100,
 
    moveSnake: function() {
       const gridElList = document.getElementsByClassName('square');
@@ -122,6 +123,7 @@ let model = {
          view.renderApple();
          this.score++;
          view.renderScore();
+         checkSpeedLimits(this.speedLimit);
          return true;
       }
    },
@@ -167,24 +169,26 @@ let model = {
    wallsOff: function() {
       document.querySelector('.gridEl').style.border = '2px solid darkgray';
       model.wallsEnabled = false;
-      console.log('walls off');
       changeButton(document.querySelector('#wallsOff'), document.querySelector('#wallsOn'));
    },
    wallsOn: function() {
       document.querySelector('.gridEl').style.border = '2px solid black';
       model.wallsEnabled = true;
-      console.log('walls on');
       changeButton(document.querySelector('#wallsOn'), document.querySelector('#wallsOff'));
    },
 
    speedLimit16: function() {
-
+      console.log('speed limit 16');
+      model.speedLimit = 3;
+      changeButton(document.querySelector('#speed16'), document.querySelector('#speed20'));
    },
    speedLimit20: function() {
-
+      console.log('speed limit 20');
+      changeButton(document.querySelector('#speed20'), document.querySelector('#speedNormal'));
    },
    speedNormal: function() {
-
+      console.log('speed limit Normal');
+      changeButton(document.querySelector('#speedNormal'), document.querySelector('#speed16'));
    },
 
    exitModal: function() {
@@ -270,7 +274,6 @@ function changeSnakeWidth(width, height) {
       gridElList[i].style.height = height;
    }
    model.squareSize = parseInt(width);
-   console.log(model.squareSize);
    view.renderSnake();
 }
 
@@ -304,6 +307,12 @@ function travelSnakeThroughWalls(grid) {
       controller.btnClickable = true;
       return clearInterval(controller.intervalID);
    }
+}
+
+function checkSpeedLimits(limit) {
+   if (model.score === limit) {
+      model.levelUp = 1;
+   } 
 }
 
 
