@@ -45,6 +45,11 @@ button {
    left: 0;
    background: rgba(23, 32, 42, .95);
 }
+#modeBtn,
+#startBtn,
+#pauseBtn {
+   width: 110px;
+}
 .mode__h2 {
    font-size: 4rem;
    letter-spacing: 5px;
@@ -73,9 +78,13 @@ button {
 #speedNormal {
    display: none;
 }
+#pauseBtn {
+   display: none;
+}
 
 #exitModal {
    display: block;
    margin: 20px auto;
 }
+
 

@@ -6,6 +6,7 @@ window.onload = function() {
    document.querySelector('#startBtn').addEventListener('click', controller.startGame);
    document.onkeyup = controller.controlSnake;
    document.querySelector('#modeBtn').addEventListener('click', controller.chooseMode);
+   document.querySelector('#pauseBtn').addEventListener('click', controller.pauseUnpause);
    
    document.querySelector('#biggerGrid').addEventListener('click', model.biggerGrid);
    document.querySelector('#smallerGrid').addEventListener('click', model.smallerGrid);
@@ -99,7 +100,8 @@ let model = {
    
             || gridElList[model.snake[0] + controller.direction].classList.contains('snake')
             ) {
-               controller.btnClickable = true;
+               changeButton(document.querySelector('#pauseBtn'), document.querySelector('#startBtn'));
+               document.querySelector('#startBtn').innerHTML = 'Restart';
                return clearInterval(controller.intervalID);
          }   
       }
@@ -202,14 +204,25 @@ let model = {
 let controller = {
    direction: 1,
    intervalID: 0,
-   btnClickable: true,
+   gamePaused: false,
 
    startGame: function() {
-      if (controller.btnClickable) {
-         controller.resetGame();
+      controller.resetGame();
+      controller.intervalID = window.setInterval(model.moveSnake, model.speed);
+      view.renderApple();
+      controller.btnClickable = false;
+      changeButton(document.querySelector('#startBtn'), document.querySelector('#pauseBtn')); 
+   },
+
+   pauseUnpause: function() {
+      if (!controller.gamePaused) {
+         clearInterval(controller.intervalID);
+         document.querySelector('#pauseBtn').innerHTML = 'Start';
+         controller.gamePaused = true;  
+      } else {
          controller.intervalID = window.setInterval(model.moveSnake, model.speed);
-         view.renderApple();
-         controller.btnClickable = false;   
+         document.querySelector('#pauseBtn').innerHTML = 'Pause';
+         controller.gamePaused = false;
       }
    },
 
@@ -310,7 +323,8 @@ function travelSnakeThroughWalls(grid) {
       && controller.direction === model.gridLength) {
          model.snake[0] -= model.gridSize;
    } else if (grid[model.snake[1] + controller.direction].classList.contains('snake')) {
-      controller.btnClickable = true;
+      changeButton(document.querySelector('#pauseBtn'), document.querySelector('#startBtn'));
+      document.querySelector('#startBtn').innerHTML = 'Restart';
       return clearInterval(controller.intervalID);
    }
 }
