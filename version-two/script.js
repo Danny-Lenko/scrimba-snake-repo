@@ -178,16 +178,18 @@ let model = {
    },
 
    speedLimit16: function() {
-      console.log('speed limit 16');
-      model.speedLimit = 3;
+      document.querySelector('#speedMessage').innerHTML = '-- Speed Limit 16 --';
+      model.speedLimit = 16;
       changeButton(document.querySelector('#speed16'), document.querySelector('#speed20'));
    },
    speedLimit20: function() {
-      console.log('speed limit 20');
+      document.querySelector('#speedMessage').innerHTML = '-- Speed Limit 20 --';
+      model.speedLimit = 20;
       changeButton(document.querySelector('#speed20'), document.querySelector('#speedNormal'));
    },
    speedNormal: function() {
-      console.log('speed limit Normal');
+      document.querySelector('#speedMessage').innerHTML = '-- No Speed Limits --';
+      model.speedLimit = 100;
       changeButton(document.querySelector('#speedNormal'), document.querySelector('#speed16'));
    },
 
