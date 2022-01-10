@@ -4,6 +4,10 @@ body {
    text-align: center;
 }
 
+button {
+   cursor: pointer;
+}
+
 .gridEl {
    border: 2px solid black;
    width: 200px;
@@ -50,7 +54,8 @@ body {
 }
 .mode button {
    font-size: 1.2rem;
-   padding: .5em 1.5em;
+   padding: .5em 0;
+   width: 170px
 }
 
 #smallerGrid {
@@ -61,5 +66,16 @@ body {
 }
 #wallsOn {
    display: none;
+}
+#speed20 {
+   display: none;
+}
+#speedNormal {
+   display: none;
+}
+
+#exitModal {
+   display: block;
+   margin: 20px auto;
 }
 

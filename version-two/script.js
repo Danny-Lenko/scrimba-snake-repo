@@ -13,7 +13,10 @@ window.onload = function() {
    document.querySelector('#thickerSnake').addEventListener('click', model.thickerSnake);
    document.querySelector('#wallsOff').addEventListener('click', model.wallsOff);
    document.querySelector('#wallsOn').addEventListener('click', model.wallsOn);
-
+   
+   document.querySelector('#speed16').addEventListener('click', model.speedLimit16);
+   document.querySelector('#speed20').addEventListener('click', model.speedLimit20);
+   document.querySelector('#speedNormal').addEventListener('click', model.speedNormal);
 
    document.querySelector('#exitModal').addEventListener('click', model.exitModal);
 }
@@ -106,7 +109,6 @@ let model = {
       model.snake.unshift(model.snake[0] + controller.direction);
       if (!model.wallsEnabled) {
          travelSnakeThroughWalls(gridElList);
-         // view.renderSnake();
       }
       model.growSnake(gridElList);
       view.renderSnake();
@@ -130,6 +132,9 @@ let model = {
          this.snake.push(this.tail);
       }
    },
+
+   // ----------------
+   // modes settings
 
    biggerGrid: function() {
       clearInterval(controller.intervalID);
@@ -170,6 +175,16 @@ let model = {
       model.wallsEnabled = true;
       console.log('walls on');
       changeButton(document.querySelector('#wallsOn'), document.querySelector('#wallsOff'));
+   },
+
+   speedLimit16: function() {
+
+   },
+   speedLimit20: function() {
+
+   },
+   speedNormal: function() {
+
    },
 
    exitModal: function() {
@@ -225,6 +240,9 @@ let controller = {
    }
 
 };
+
+// -------------------
+// auxiliary functions
 
 function changeGridSize(width, height) {
    const gridEl = document.querySelector('.gridEl');
